@@ -9,6 +9,7 @@ import static com.micro.constant.AppConstants.ReplicationStrategy;
 import com.micro.auth.pojo.Machine;
 import com.micro.cassandra.Cassandra;
 import com.micro.cassandra.CassandraConnector;
+import com.micro.auth.accessors.MachineAccessor;
 import com.micro.auth.constant.AppConstants;
 
 
@@ -34,6 +35,13 @@ public class MachineDao {
 		}
 	}
 
+	public Machine getMachine(String macAddress) {
+		MappingManager manager = new MappingManager(cassandraConnector.getSession());
+		MachineAccessor machineAccessor=manager.createAccessor(MachineAccessor.class);
+		Machine machine =machineAccessor.getMachine(macAddress);
+		return machine;
+	}
+	
 	private void createKeySpace() {
 	Cassandra.createKeySpace(cassandraConnector.getSession(),AppConstants.DOCKERKEYSPACE , ReplicationStrategy.SimpleStrategy, 1);
 		

@@ -29,16 +29,12 @@ public class AuthControllerImpl implements AuthController {
 	
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value="/create",method = RequestMethod.POST)
-	//@Override
+	@Override
 	public ResponseEntity create( @Valid @RequestBody Machine entity) {
 		authService.create(entity);
 		URI location =ServletUriComponentsBuilder.fromCurrentRequest().path("{name}").buildAndExpand(entity.getHostName()).toUri();
 		return ResponseEntity.created(location).build();
 	}
-	
-	
-	
-	
 	
 	@RequestMapping(value="/refreshToken",method = RequestMethod.POST)
 	@Override
@@ -53,18 +49,10 @@ public class AuthControllerImpl implements AuthController {
 		return ResponseEntity.ok(authService.getPublicKey());
 	}
 
-
-
-
-
 	@Override
-	public ResponseEntity register(Machine user) {
-		// get the machine from cassandra 
-		// sent the jwt back
-		
-		
-		return null;
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value="/register",method = RequestMethod.POST)
+	public ResponseEntity register(@Valid @RequestBody Machine machine) {
+	return ResponseEntity.ok(authService.register(machine));	
 	}
-
-
 }

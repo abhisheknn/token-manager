@@ -139,13 +139,9 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public String register(Machine user) {
-
-		// get machine from cassandra
-		// return jwt
-		
-		
-		return null;
+	public String register(Machine machine) {
+		Machine m=machinedao.getMachine(machine.getMacAddress());
+		return m.getJWToken();
 	}
 
 
