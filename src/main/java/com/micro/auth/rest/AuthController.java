@@ -13,6 +13,7 @@ import com.micro.auth.pojo.Machine;
 public interface AuthController {
 
 public ResponseEntity register(Machine user);
+public ResponseEntity create(Machine user);
 public Response refreshToken(Machine user);
 
 }

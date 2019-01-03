@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.micro.auth.constant.AppConstants;
+import com.micro.auth.dao.MachineDao;
 import com.micro.auth.pojo.Machine;
 import com.micro.auth.util.JWTProvider;
 import com.micro.auth.util.KeyProvider;
@@ -43,26 +44,26 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
 	KeyProvider keyProvider;
 
-	public void init() {
-		
-	}
-	
+	@Autowired
+	MachineDao machinedao; 
+
 	@Override
-	public String create(Machine entity) {
+	public String create(Machine machine) {
 		String token ="";
 		// For the new users roles will not available
-		if (entity.getControls() == null) {
+		if (machine.getControls() == null) {
 			Map<String, Object> defaultAccess = new HashMap<>();
 			defaultAccess.put("control", "inspect");
-			entity.setControls(defaultAccess);
+			machine.setControls(defaultAccess);
 		}
-		if (entity.getJWToken() == null) {
+		if (machine.getJWToken() == null) {
 			//jwtProvider.setKeyProvider(keyProvider);
-			 token = jwtProvider.getToken(entity.getName(), entity.getControls(),keyProvider);
-			entity.setJWToken(token);
+			 token = jwtProvider.getToken(machine.getHostName(), machine.getControls(),keyProvider);
+			machine.setJWToken(token);
 		}
 		
-		//Todo save it in cassandra DB 
+		// store in cassandra
+		machinedao.addMachine(machine);
 		
 		return token;
 	}
@@ -135,6 +136,16 @@ public class AuthServiceImpl implements AuthService {
 			entytiMap.put(AppConstants.JWTOKEN, token);
 		}
 		return entytiMap.get(AppConstants.JWTOKEN);
+	}
+
+	@Override
+	public String register(Machine user) {
+
+		// get machine from cassandra
+		// return jwt
+		
+		
+		return null;
 	}
 
 

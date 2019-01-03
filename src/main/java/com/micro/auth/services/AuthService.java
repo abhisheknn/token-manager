@@ -6,4 +6,5 @@ public interface AuthService {
 	public String create(Machine user);
 	public String getPublicKey();
 	public String refreshToken(String entityName);
+	public String register(Machine user);
 }

@@ -81,7 +81,7 @@
   		<artifactId>commonlib</artifactId>
   		<version>0.1</version>	
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j -->
+	
 
 <!--
 <dependency>
@@ -127,6 +127,19 @@
 			<artifactId>spring-cloud-starter-config</artifactId>
 </dependency>
 
+<!-- Cassandra -->
+<dependency>
+  <groupId>com.datastax.cassandra</groupId>
+  <artifactId>cassandra-driver-core</artifactId>
+  <version>3.6.0</version>
+</dependency>
+
+
+<dependency>
+  <groupId>com.datastax.cassandra</groupId>
+  <artifactId>cassandra-driver-mapping</artifactId>
+  <version>3.6.0</version>
+</dependency>
 
 </dependencies>
 	
