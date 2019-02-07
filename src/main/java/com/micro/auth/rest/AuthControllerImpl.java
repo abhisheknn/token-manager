@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class AuthControllerImpl implements AuthController {
 	AuthService authService;
 	
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value="/create",method = RequestMethod.POST)
+	@RequestMapping(value="/create",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity create( @Valid @RequestBody Machine entity) {
 		authService.create(entity);
@@ -36,14 +37,14 @@ public class AuthControllerImpl implements AuthController {
 		return ResponseEntity.created(location).build();
 	}
 	
-	@RequestMapping(value="/refreshToken",method = RequestMethod.POST)
+	@RequestMapping(value="/refreshToken",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public Response refreshToken(@RequestBody Machine entity) {
 		return Response.ok(authService.refreshToken(entity.getHostName())).build();
 	}
 	
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value="/getPublicKey",method = RequestMethod.GET)
+	@RequestMapping(value="/getPublicKey",method = RequestMethod.GET,consumes=MediaType.APPLICATION_JSON_VALUE)
 	
 	public ResponseEntity<String> getPublicKey() {
 		return ResponseEntity.ok(authService.getPublicKey());
@@ -51,7 +52,7 @@ public class AuthControllerImpl implements AuthController {
 
 	@Override
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value="/register",method = RequestMethod.POST)
+	@RequestMapping(value="/register",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity register(@Valid @RequestBody Machine machine) {
 	return ResponseEntity.ok(authService.register(machine));	
 	}
