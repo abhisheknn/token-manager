@@ -10,5 +10,5 @@ public static final String JWTOKEN = "jwtoken";
 public static final String CASSANDRA_HOST=System.getenv("CASSANDRA_HOST");
 public static final String CASSANDRA_PORT=System.getenv("CASSANDRA_PORT");
 public static final String DOCKERKEYSPACE="dockerx";
-public static final String DOCKERENV = "dockerenv";
+public static final String MACHINETABLE = "machine";
 }

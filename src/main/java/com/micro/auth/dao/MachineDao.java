@@ -25,13 +25,7 @@ public class MachineDao {
 		Mapper<Machine> mapper = manager.mapper(Machine.class);
 		mapper.save(machine);
 		}catch(IllegalArgumentException  e ) {
-			if(e.getMessage().contains("Keyspace")) {
-				createKeySpace();
-				createMachineTable();
-			}
-			if(e.getMessage().contains("Table")) {
-				createMachineTable();
-			}
+			e.printStackTrace();
 		}
 	}
 
@@ -42,13 +36,4 @@ public class MachineDao {
 		return machine;
 	}
 	
-	private void createKeySpace() {
-	Cassandra.createKeySpace(cassandraConnector.getSession(),AppConstants.DOCKERKEYSPACE , ReplicationStrategy.SimpleStrategy, 1);
-		
-	}
-
-	private void createMachineTable() {
-		Cassandra.createTable(cassandraConnector.getSession(),AppConstants.DOCKERKEYSPACE , AppConstants.DOCKERENV, Machine.getColoumnsForMachinesTable());
-		
-	}
 }
