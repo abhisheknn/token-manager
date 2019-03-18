@@ -17,7 +17,6 @@ import com.micro.auth.constant.AppConstants;
 import javax.validation.constraints.Pattern;
 
 @Table(keyspace = AppConstants.DOCKERKEYSPACE, name = AppConstants.MACHINETABLE, readConsistency = "QUORUM", writeConsistency = "QUORUM", caseSensitiveKeyspace = false, caseSensitiveTable = false)
-
 public class Machine {
 	@PartitionKey
 	private String macAddress;
@@ -80,11 +79,12 @@ public class Machine {
 
 	public static Map<String, String> getColoumnsForMachinesTable() {
 		Map<String, String> columnConf = new HashMap<>();
-		columnConf.put("macAddress", "text PRIMARY KEY");
+		columnConf.put("macAddress", "text");
 		columnConf.put("hostName", "text");
 		columnConf.put("uuid", "text");
 		columnConf.put("JWToken", "text");
 		columnConf.put("tenantId", "text");
+		columnConf.put("PRIMARY KEY","(tenantId , macAddress)");
 		return columnConf;
 	}
 

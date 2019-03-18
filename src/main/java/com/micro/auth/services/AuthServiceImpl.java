@@ -37,7 +37,6 @@ import io.jsonwebtoken.Jwts;
 @Component
 public class AuthServiceImpl implements AuthService {
 
-
 	@Autowired
 	JWTProvider jwtProvider;
 
@@ -53,7 +52,9 @@ public class AuthServiceImpl implements AuthService {
 		// For the new users roles will not available
 		if (machine.getControls() == null) {
 			Map<String, Object> defaultAccess = new HashMap<>();
-			defaultAccess.put("control", "inspect");
+			defaultAccess.put("macaddress", machine.getMacAddress());
+			defaultAccess.put("tenantid", machine.getTenantId());
+			defaultAccess.put("uuid", machine.getUuid());
 			machine.setControls(defaultAccess);
 		}
 		if (machine.getJWToken() == null) {
@@ -140,12 +141,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String register(Machine machine) {
-		Machine m=machinedao.getMachine(machine.getMacAddress());
+		Machine m=machinedao.getMachine(machine.getTenantId(),machine.getMacAddress());
 		return m.getJWToken();
 	}
 
-
-
-	
 
 }

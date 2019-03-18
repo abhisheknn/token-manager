@@ -29,10 +29,10 @@ public class MachineDao {
 		}
 	}
 
-	public Machine getMachine(String macAddress) {
+	public Machine getMachine(String tenantid,String macAddress) {
 		MappingManager manager = new MappingManager(cassandraConnector.getSession());
 		MachineAccessor machineAccessor=manager.createAccessor(MachineAccessor.class);
-		Machine machine =machineAccessor.getMachine(macAddress);
+		Machine machine =machineAccessor.getMachine(tenantid,macAddress);
 		return machine;
 	}
 	
