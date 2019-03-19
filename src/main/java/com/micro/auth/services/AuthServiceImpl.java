@@ -123,12 +123,11 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String refreshToken(String entityName) {
-		Map<String, String> entytiMap = new HashMap<>();//redisDao.getUser(userName);
+		Map<String, String> entytiMap = new HashMap<>();
 		String jwToken = null;
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		// User user=mapper.convertValue(userMap, User.class);
 		if (entytiMap.get(AppConstants.ENTITYNAME).equals(entityName)) {
 			Key k = getKey();
 			jwToken = entytiMap.get(AppConstants.JWTOKEN);
@@ -145,5 +144,14 @@ public class AuthServiceImpl implements AuthService {
 		return m.getJWToken();
 	}
 
+
+
+	@Override
+	public Map<String,String> getMachines(String tenantId) {
+		return machinedao.getMachines(tenantId);
+	}
+
+	
+	
 
 }

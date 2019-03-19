@@ -15,5 +15,6 @@ public interface AuthController {
 public ResponseEntity register(Machine user);
 public ResponseEntity create(Machine user);
 public Response refreshToken(Machine user);
+ResponseEntity getMachines(String tenantid);
 
 }

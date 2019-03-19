@@ -18,7 +18,4 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTProvider extends com.micro.jwt.JWTProvider {
-
-	
-	
 }

@@ -24,6 +24,7 @@ public class Machine {
 	private String uuid;
 	private String JWToken;
 	private String tenantId;
+	private String status;
 
 	@Transient
 	private Map<String, Object> controls;
@@ -51,6 +52,14 @@ public class Machine {
 	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
 
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getJWToken() {
@@ -84,7 +93,8 @@ public class Machine {
 		columnConf.put("uuid", "text");
 		columnConf.put("JWToken", "text");
 		columnConf.put("tenantId", "text");
-		columnConf.put("PRIMARY KEY","(tenantId , macAddress)");
+		columnConf.put("status", "text");
+		columnConf.put("PRIMARY KEY", "(tenantId , macAddress)");
 		return columnConf;
 	}
 
