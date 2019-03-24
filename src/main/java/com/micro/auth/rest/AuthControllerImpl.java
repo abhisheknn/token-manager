@@ -66,4 +66,11 @@ public class AuthControllerImpl implements AuthController {
 	public ResponseEntity getMachines(@RequestParam("tenantid") String tenantId) {
 	return ResponseEntity.ok(authService.getMachines(tenantId));
 	}
+
+	@Override
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value="/update/status",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity updateStatus(@Valid @RequestBody Machine machine) {
+		return ResponseEntity.ok(authService.updateStatus(machine));
+	}
 }

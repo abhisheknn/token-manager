@@ -10,4 +10,5 @@ public interface AuthService {
 	public String refreshToken(String entityName);
 	public String register(Machine machine);
 	public Map<String,String> getMachines(String tenantId);
+	public String updateStatus(Machine machine);
 }

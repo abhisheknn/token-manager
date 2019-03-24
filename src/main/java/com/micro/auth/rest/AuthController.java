@@ -12,9 +12,10 @@ import com.micro.auth.pojo.Machine;
 
 public interface AuthController {
 
-public ResponseEntity register(Machine user);
-public ResponseEntity create(Machine user);
-public Response refreshToken(Machine user);
-ResponseEntity getMachines(String tenantid);
+public ResponseEntity register(Machine machine);
+public ResponseEntity create(Machine machine);
+public Response refreshToken(Machine machine);
+public ResponseEntity getMachines(String tenantid);
+public ResponseEntity updateStatus(Machine machine );
 
 }

@@ -151,7 +151,11 @@ public class AuthServiceImpl implements AuthService {
 		return machinedao.getMachines(tenantId);
 	}
 
-	
+
+	@Override
+	public String updateStatus(Machine machine) {
+		return machinedao.updateStatus(machine);
+	}
 	
 
 }
