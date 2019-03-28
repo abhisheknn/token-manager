@@ -1,6 +1,7 @@
 package com.micro.auth.rest;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.datastax.driver.mapping.annotations.QueryParameters;
 import com.micro.auth.pojo.Machine;
+import com.micro.auth.pojo.Tenant;
 import com.micro.auth.services.AuthService;
 
 @RestController
@@ -31,11 +33,20 @@ public class AuthControllerImpl implements AuthController {
 	AuthService authService;
 	
 	@CrossOrigin(origins = "*")
-	@RequestMapping(value="/create",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/create/machine",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public ResponseEntity create( @Valid @RequestBody Machine entity) {
-		authService.create(entity);
+	public ResponseEntity createMachine( @Valid @RequestBody Machine entity) {
+		authService.createMachine(entity);
 		URI location =ServletUriComponentsBuilder.fromCurrentRequest().path("{name}").buildAndExpand(entity.getHostName()).toUri();
+		return ResponseEntity.created(location).build();
+	}
+	
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value="/create/tenant",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
+	@Override
+	public ResponseEntity createTenant( @Valid @RequestBody Tenant tenant) {
+		authService.createTenant(tenant);
+		URI location =ServletUriComponentsBuilder.fromCurrentRequest().path("{name}").buildAndExpand(tenant.getTenantId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 	
@@ -72,5 +83,12 @@ public class AuthControllerImpl implements AuthController {
 	@RequestMapping(value="/update/status",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity updateStatus(@Valid @RequestBody Machine machine) {
 		return ResponseEntity.ok(authService.updateStatus(machine));
+	}
+
+	@Override
+	@CrossOrigin(origins = "*")
+	@RequestMapping(value="/get/tenant",method = RequestMethod.GET)
+	public ResponseEntity<List<Tenant>> getTenant(@RequestParam(value="tenantid",required=false) String tenantid) {
+		return ResponseEntity.ok(authService.getTenant(tenantid));
 	}
 }

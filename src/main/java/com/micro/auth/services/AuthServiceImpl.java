@@ -11,6 +11,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,7 +27,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.micro.auth.constant.AppConstants;
 import com.micro.auth.dao.MachineDao;
+import com.micro.auth.dao.TenantDao;
 import com.micro.auth.pojo.Machine;
+import com.micro.auth.pojo.Tenant;
 import com.micro.auth.util.JWTProvider;
 import com.micro.auth.util.KeyProvider;
 
@@ -45,9 +48,12 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	MachineDao machinedao; 
+	
+	@Autowired
+	TenantDao tenantDao; 
 
 	@Override
-	public String create(Machine machine) {
+	public String createMachine(Machine machine) {
 		String token ="";
 		// For the new users roles will not available
 		if (machine.getControls() == null) {
@@ -66,6 +72,27 @@ public class AuthServiceImpl implements AuthService {
 		// store in cassandra
 		machinedao.addMachine(machine);
 		
+		return token;
+	}
+	
+	
+	@Override
+	public String createTenant(Tenant tenant) {
+		String token ="";
+		// For the new users roles will not available
+		if (tenant.getControls() == null) {
+			Map<String, Object> defaultAccess = new HashMap<>();
+			defaultAccess.put("tenantid", tenant.getTenantId());
+			tenant.setControls(defaultAccess);
+		}
+		if (tenant.getJWToken() == null) {
+			//jwtProvider.setKeyProvider(keyProvider);
+			 token = jwtProvider.getToken(tenant.getTenantId(), tenant.getControls(),keyProvider);
+			 tenant.setJWToken(token);
+		}
+		
+		// store in cassandra
+		tenantDao.create(tenant);
 		return token;
 	}
 
@@ -150,12 +177,19 @@ public class AuthServiceImpl implements AuthService {
 	public Map<String,String> getMachines(String tenantId) {
 		return machinedao.getMachines(tenantId);
 	}
+	
 
 
 	@Override
 	public String updateStatus(Machine machine) {
 		return machinedao.updateStatus(machine);
 	}
-	
+
+
+	@Override
+	public List<Tenant> getTenant(String tenantId) {
+		return tenantDao.getTenant(tenantId);
+	}
+
 
 }
