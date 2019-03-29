@@ -17,6 +17,7 @@ import com.micro.auth.pojo.Machine;
 import com.micro.auth.pojo.Tenant;
 import com.micro.cassandra.Cassandra;
 import com.micro.cassandra.CassandraConnector;
+import com.micro.constant.AppConstants.ReplicationStrategy;
 
 @Component
 public class TenantDaoImpl implements TenantDao {
@@ -37,9 +38,14 @@ public class TenantDaoImpl implements TenantDao {
 			MappingManager manager = new MappingManager(cassandraConnector.getSession());	
 			Mapper<Tenant> mapper = manager.mapper(Tenant.class);
 			mapper.save(tenant);
+			createKeySpace(tenant.getCassandraKeySpace());
 			}catch(IllegalArgumentException  e ) {
 				e.printStackTrace();
 			}
+	}
+
+	private void createKeySpace(String keySpace) {
+		Cassandra.createKeySpace(cassandraConnector.getSession(), keySpace, ReplicationStrategy.SimpleStrategy, 1);
 	}
 
 	@Override
