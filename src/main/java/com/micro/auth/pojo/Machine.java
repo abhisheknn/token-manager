@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -16,9 +18,13 @@ import com.micro.auth.constant.AppConstants;
 
 import javax.validation.constraints.Pattern;
 
+
 @Table(keyspace = AppConstants.DOCKERKEYSPACE, name = AppConstants.MACHINETABLE, readConsistency = "QUORUM", writeConsistency = "QUORUM", caseSensitiveKeyspace = false, caseSensitiveTable = false)
+@javax.persistence.Table(name = AppConstants.MACHINETABLE)
+@Entity
 public class Machine {
 	@PartitionKey
+  @Id
 	private String macAddress;
 	private String hostName;
 	private String uuid;
@@ -27,6 +33,7 @@ public class Machine {
 	private String status;
 
 	@Transient
+  @javax.persistence.Transient
 	private Map<String, Object> controls;
 
 	public Map<String, Object> getControls() {
