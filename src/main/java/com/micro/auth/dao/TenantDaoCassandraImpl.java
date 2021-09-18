@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.datastax.driver.core.ResultSet;
@@ -19,7 +20,8 @@ import com.micro.cassandra.Cassandra;
 import com.micro.cassandra.CassandraConnector;
 import com.micro.constant.AppConstants.ReplicationStrategy;
 
-@Component
+@Component("tenantDaoCassandraImpl")
+@ConditionalOnProperty(prefix = "datasource", name = "type", havingValue = "cassandra")
 public class TenantDaoCassandraImpl implements TenantDao {
 
 	@Autowired

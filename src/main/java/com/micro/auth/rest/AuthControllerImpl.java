@@ -28,10 +28,10 @@ import com.micro.auth.services.AuthService;
 @RestController
 @RequestMapping("/auth")
 public class AuthControllerImpl implements AuthController {
-	
+
 	@Autowired
 	AuthService authService;
-	
+
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value="/create/machine",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Override
@@ -40,7 +40,7 @@ public class AuthControllerImpl implements AuthController {
 		URI location =ServletUriComponentsBuilder.fromCurrentRequest().path("{name}").buildAndExpand(entity.getHostName()).toUri();
 		return ResponseEntity.created(location).build();
 	}
-	
+
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value="/create/tenant",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Override
@@ -49,16 +49,16 @@ public class AuthControllerImpl implements AuthController {
 		URI location =ServletUriComponentsBuilder.fromCurrentRequest().path("{name}").buildAndExpand(tenant.getTenantId()).toUri();
 		return ResponseEntity.created(location).build();
 	}
-	
+
 	@RequestMapping(value="/refreshToken",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public Response refreshToken(@RequestBody Machine entity) {
 		return Response.ok(authService.refreshToken(entity.getHostName())).build();
 	}
-	
+
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value="/getPublicKey",method = RequestMethod.GET,consumes=MediaType.APPLICATION_JSON_VALUE)
-	
+
 	public ResponseEntity<String> getPublicKey() {
 		return ResponseEntity.ok(authService.getPublicKey());
 	}
@@ -67,11 +67,18 @@ public class AuthControllerImpl implements AuthController {
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value="/register",method = RequestMethod.POST,consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity register(@Valid @RequestBody Machine machine) {
-	return ResponseEntity.ok(authService.register(machine));	
+	return ResponseEntity.ok(authService.register(machine));
 	}
-	
-	
-	@Override
+
+  @Override
+  @CrossOrigin(origins = "*")
+  @RequestMapping(value="/machine",method = RequestMethod.GET,consumes=MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity getMachine(@Valid @RequestBody Machine machine) {
+    return ResponseEntity.ok(authService.getMachine(machine));
+  }
+
+
+  @Override
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value="/getMachines",method = RequestMethod.GET)
 	public ResponseEntity getMachines(@RequestParam("tenantid") String tenantId) {

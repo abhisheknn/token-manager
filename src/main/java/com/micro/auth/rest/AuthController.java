@@ -20,5 +20,6 @@ public Response refreshToken(Machine machine);
 public ResponseEntity getMachines(String tenantid);
 public ResponseEntity<List<Tenant>> getTenant(String tenantid);
 public ResponseEntity updateStatus(Machine machine );
+public ResponseEntity getMachine(Machine machine);
 
 }

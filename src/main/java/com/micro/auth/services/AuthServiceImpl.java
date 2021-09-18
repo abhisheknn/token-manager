@@ -47,10 +47,11 @@ public class AuthServiceImpl implements AuthService {
 	KeyProvider keyProvider;
 
 	@Autowired
-	MachineDao machinedao; 
-	
+	MachineService machineService;
+
+
 	@Autowired
-	TenantDao tenantDao; 
+	TenantService tenantService;
 
 	@Override
 	public String createMachine(Machine machine) {
@@ -68,14 +69,12 @@ public class AuthServiceImpl implements AuthService {
 			 token = jwtProvider.getToken(machine.getHostName(), machine.getControls(),keyProvider);
 			machine.setJWToken(token);
 		}
-		
-		// store in cassandra
-		machinedao.addMachine(machine);
-		
+		// store in db
+    machineService.addMachine(machine);
 		return token;
 	}
-	
-	
+
+
 	@Override
 	public String createTenant(Tenant tenant) {
 		String token ="";
@@ -90,9 +89,8 @@ public class AuthServiceImpl implements AuthService {
 			 token = jwtProvider.getToken(tenant.getTenantId(), tenant.getControls(),keyProvider);
 			 tenant.setJWToken(token);
 		}
-		
-		// store in cassandra
-		tenantDao.create(tenant);
+		// store in db
+    tenantService.create(tenant);
 		return token;
 	}
 
@@ -146,7 +144,7 @@ public class AuthServiceImpl implements AuthService {
 		return userClaimsMap;
 	}
 
-	
+
 
 	@Override
 	public String refreshToken(String entityName) {
@@ -167,7 +165,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public String register(Machine machine) {
-		Machine m=machinedao.getMachine(machine.getTenantId(),machine.getMacAddress());
+		Machine m=machineService.getMachine(machine.getTenantId(),machine.getMacAddress());
 		return m.getJWToken();
 	}
 
@@ -175,20 +173,29 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public Map<String,String> getMachines(String tenantId) {
-		return machinedao.getMachines(tenantId);
+		return machineService.getMachines(tenantId);
 	}
-	
 
 
-	@Override
+  @Override
+  public Machine getMachine(Machine machine) {
+    return machineService.getMachine(machine.getTenantId(),machine.getMacAddress());
+  }
+
+  @Override
+  public Machine getMachines(String tenantId, String macAddress) {
+    return null;
+  }
+
+  @Override
 	public String updateStatus(Machine machine) {
-		return machinedao.updateStatus(machine);
+		return machineService.updateStatus(machine);
 	}
 
 
 	@Override
 	public List<Tenant> getTenant(String tenantId) {
-		return tenantDao.getTenant(tenantId);
+		return tenantService.getTenant(tenantId);
 	}
 
 

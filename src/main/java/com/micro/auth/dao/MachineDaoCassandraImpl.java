@@ -1,6 +1,7 @@
 package com.micro.auth.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.datastax.driver.core.ResultSet;
@@ -24,7 +25,8 @@ import com.micro.auth.accessors.MachineAccessor;
 import com.micro.auth.constant.AppConstants;
 
 
-@Component
+@Component("machineDaoCassandraImpl")
+@ConditionalOnProperty(prefix = "datasource", name = "type", havingValue = "cassandra")
 public class MachineDaoCassandraImpl implements MachineDao {
 
 	@Autowired

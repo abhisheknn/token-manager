@@ -13,9 +13,11 @@ public interface AuthService {
 	public String refreshToken(String entityName);
 	public String register(Machine machine);
 	public Map<String,String> getMachines(String tenantId);
+  public Machine getMachines(String tenantId,String macAddress);
 	public String updateStatus(Machine machine);
 	public String createMachine(Machine machine);
 	public String createTenant(Tenant tenant);
 	public List<Tenant> getTenant(String tenant);
-	
+	public Machine getMachine(Machine machine);
+
 }
