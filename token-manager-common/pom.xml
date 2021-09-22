@@ -27,12 +27,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <version>2.2.2.RELEASE</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.datastax.cassandra</groupId>
       <artifactId>cassandra-driver-mapping</artifactId>
       <version>3.6.0</version>
@@ -41,6 +35,33 @@
       <groupId>com.micro</groupId>
       <artifactId>commonlib</artifactId>
       <version>0.1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>javax.persistence-api</artifactId>
+      <version>2.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.netflix.feign</groupId>
+      <artifactId>feign-core</artifactId>
+      <version>8.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.feign</groupId>
+      <artifactId>feign-ribbon</artifactId>
+      <version>8.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.feign</groupId>
+      <artifactId>feign-jackson</artifactId>
+      <version>8.18.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.feign</groupId>
+      <artifactId>feign-okhttp</artifactId>
+      <version>8.18.0</version>
     </dependency>
 
   </dependencies>
