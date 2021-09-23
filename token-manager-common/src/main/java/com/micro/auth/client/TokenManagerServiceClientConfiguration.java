@@ -1,5 +1,7 @@
 package com.micro.auth.client;
 
+import com.micro.discovery.FeignClientProvider;
+import com.micro.discovery.RibbonLBClientFactory;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.client.ClientFactory;
 import com.netflix.client.IClient;
@@ -23,48 +25,13 @@ import org.springframework.cloud.netflix.ribbon.StaticServerList;
 import java.util.List;
 
 public class TokenManagerServiceClientConfiguration {
-
+  public static final String TOKEN_MANAGER_SERVICE = "TOKEN-MANAGER-SERVICE";
   private final TokenManagerServiceClient tokenManagerServiceClient;
   public TokenManagerServiceClientConfiguration( DiscoveryClient discoveryClient) {
-    TokenManagerLBClientFactory tokenManagerRibbonClient=new TokenManagerLBClientFactory(discoveryClient);
-    tokenManagerRibbonClient.create("TOKEN-MANAGER-SERVICE");
-    RibbonClient ribbonClient=RibbonClient.builder().lbClientFactory(tokenManagerRibbonClient).build();
-    tokenManagerServiceClient = Feign.builder()
-              .client(ribbonClient)
-              .decoder(new JacksonDecoder())
-              .encoder(new JacksonEncoder())
-              .logLevel(Logger.Level.FULL)
-              .options(new Request.Options(30000, 30000))
-              .target(TokenManagerServiceClient.class,"http://TOKEN-MANAGER-SERVICE");
+    FeignClientProvider feignClientProvider= new FeignClientProvider();
+    tokenManagerServiceClient = (TokenManagerServiceClient) feignClientProvider.getServiceClient(discoveryClient,TokenManagerServiceClient.class, TOKEN_MANAGER_SERVICE);
   }
-
   public TokenManagerServiceClient getTokenManagerServiceClient() {
     return tokenManagerServiceClient;
   }
-
-private class TokenManagerLBClientFactory implements LBClientFactory {
-  DiscoveryClient discoveryClient;
-  TokenManagerLBClientFactory(DiscoveryClient discoveryClient){
-      this.discoveryClient=discoveryClient;
-    }
-
-  @Override
-  public LBClient create(String s) {
-
-    List<ServiceInstance> instances = discoveryClient.getInstances(s);
-    IClientConfig iClientConfig= ClientFactory.getNamedConfig(s);
-    IRule iRule= new RoundRobinRule();
-    IPing iPing= new NoOpPing();
-    Server[] serverArray = new Server[instances.size()];
-    int index=0;
-    for (ServiceInstance serverInstance:instances){
-      serverArray[index++]=new Server(serverInstance.getHost(),serverInstance.getPort());
-    }
-    StaticServerList serverList= new StaticServerList(serverArray);
-    DynamicServerListLoadBalancer dynamicServerListLoadBalancer = new DynamicServerListLoadBalancer(iClientConfig, iRule, iPing, serverList, null);
-
-    LBClient lbClient= LBClient.create(dynamicServerListLoadBalancer,iClientConfig);
-    return  lbClient;
-  }
- }
 }
