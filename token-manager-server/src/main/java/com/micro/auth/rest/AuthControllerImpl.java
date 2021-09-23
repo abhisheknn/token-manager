@@ -26,7 +26,7 @@ import com.micro.auth.pojo.Tenant;
 import com.micro.auth.services.AuthService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("v1/auth")
 public class AuthControllerImpl implements AuthController {
 
 	@Autowired
@@ -71,6 +71,12 @@ public class AuthControllerImpl implements AuthController {
   @RequestMapping(value="/machine",method = RequestMethod.GET,consumes=MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity getMachine(@Valid @RequestBody Machine machine) {
     return ResponseEntity.ok(authService.getMachine(machine));
+  }
+
+  //@Override
+  @RequestMapping(value="/machine/pojo/{tenantId}/{macAddress}",method = RequestMethod.GET)
+  public Machine getMachinePojo(@PathVariable(name="tenantId") String tenantId, @PathVariable(name="macAddress") String macAddress) {
+    return authService.getMachine(tenantId,macAddress);
   }
 
 

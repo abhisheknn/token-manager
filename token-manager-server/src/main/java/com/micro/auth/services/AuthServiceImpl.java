@@ -183,6 +183,11 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
+  public Machine getMachine(String tenantId, String macAddress) {
+    return machineService.getMachine(tenantId,macAddress);
+  }
+
+  @Override
   public Machine getMachines(String tenantId, String macAddress) {
     return null;
   }
