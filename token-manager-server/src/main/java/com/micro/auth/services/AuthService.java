@@ -19,5 +19,5 @@ public interface AuthService {
 	public String createTenant(Tenant tenant);
 	public List<Tenant> getTenant(String tenant);
 	public Machine getMachine(Machine machine);
-
+	Machine getMachine(String tenantId, String macAddress);
 }
