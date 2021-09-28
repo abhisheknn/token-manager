@@ -1,8 +1,8 @@
 package com.micro.auth.rest;
 
 import java.util.List;
+import java.util.Map;
 
-import javax.validation.Valid;
 import javax.ws.rs.core.Response;
 
 import org.springframework.http.ResponseEntity;
@@ -21,5 +21,5 @@ public ResponseEntity getMachines(String tenantid);
 public ResponseEntity<List<Tenant>> getTenant(String tenantid);
 public ResponseEntity updateStatus(Machine machine );
 public ResponseEntity getMachine(Machine machine);
-
+public Map<String,String> getPublicKey();
 }
